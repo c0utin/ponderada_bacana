@@ -2,11 +2,11 @@ import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
-  host: 'database-1.c18cukuqyzii.us-east-1.rds.amazonaws.com',
+  host: 'database-2.c18cukuqyzii.us-east-1.rds.amazonaws.com',
   port: 5432, // Default port for PostgreSQL
-  username: 'postgres', // Replace with your PostgreSQL username
-  password: '12345678', // Replace with your PostgreSQL password
-  database: '', // Replace with your PostgreSQL database name
+  username: 'coutin', // Replace with your PostgreSQL username
+  password: 'mengolegal', // Replace with your PostgreSQL password
+  database: 'dados', // Replace with your PostgreSQL database name
   ssl: { rejectUnauthorized: false },
 });
 
