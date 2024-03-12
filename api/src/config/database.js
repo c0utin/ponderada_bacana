@@ -1,41 +1,25 @@
-import Sequelize from 'sequelize';
-import tls from 'tls';
+import { Sequelize } from 'sequelize';
 
-// Configurações do banco de dados
-const dbname = ''; // Nome do banco de dados
-const username = 'postgres'; // Nome de usuário
-const password = '12345678'; // Senha do usuário
-
-// Certificado da autoridade de certificação (CA) do RDS
-const rdsCa = `-----BEGIN CERTIFICATE-----
-...
------END CERTIFICATE-----`;
-
-const sequelize = new Sequelize(dbname, username, password, {
-    host: 'database-1.c18cukuqyzii.us-east-1.rds.amazonaws.com', // Endereço do seu banco de dados RDS
-    dialect: 'postgres',
-    operatorsAliases: false,
-    dialectOptions: {
-        ssl: {
-            rejectUnauthorized: true,
-            ca: [rdsCa],
-            checkServerIdentity: (host, cert) => {
-                const error = tls.checkServerIdentity(host, cert);
-                if (error && !cert.subject.CN.endsWith('.rds.amazonaws.com')) {
-                    return error;
-                }
-            }
-        }
-    }
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  host: 'database-1.c18cukuqyzii.us-east-1.rds.amazonaws.com',
+  port: 5432, // Default port for PostgreSQL
+  username: 'postgres', // Replace with your PostgreSQL username
+  password: '12345678', // Replace with your PostgreSQL password
+  database: '', // Replace with your PostgreSQL database name
+  ssl: { rejectUnauthorized: false },
 });
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Conexão estabelecida com sucesso.');
-    } catch (error) {
-        console.error('Erro ao conectar ao banco de dados:', error);
-    }
-})();
+// Test the connection
+async function testConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+
+testConnection();
 
 export default sequelize;
