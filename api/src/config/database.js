@@ -1,25 +1,17 @@
-import { Sequelize } from 'sequelize';
+import Sequelize from 'sequelize';
+import { Book } from '../models/Book.js';
 
 const sequelize = new Sequelize({
-  dialect: 'postgres',
-  host: 'database-2.c18cukuqyzii.us-east-1.rds.amazonaws.com',
-  port: 5432, // Default port for PostgreSQL
-  username: 'coutin', // Replace with your PostgreSQL username
-  password: 'mengolegal', // Replace with your PostgreSQL password
-  database: 'dados', // Replace with your PostgreSQL database name
-  ssl: { rejectUnauthorized: false },
+    dialect: 'sqlite',
+    storage: 'database.sqlite'
 });
 
-// Test the connection
-async function testConnection() {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}
+Book.init(sequelize);
 
-testConnection();
+(async () => {
+    await sequelize.sync({ force: true });
+    await Book.create({name: "The art of computer programming", release: "1968-01-01", pages:"12"});
+    await Book.create({name: "The art of computer programming", release: "1968-01-01", pages:"1231312312"});
+})();
 
 export default sequelize;
